@@ -22,16 +22,20 @@
                     </div>
                     <div class="form-control">
                         <label for="price">Price</label>
-                        <input type="text" name="price" id="price" step="0.01" value="<% if(editing==='true'){ %><%= product.price %> <%} %>">
+                        <input type="text" name="price" id="price" step="0.01"
+                            value="<% if(editing==='true'){ %><%= product.price %> <%} %>">
                     </div>
                     <div class="form-control">
                         <label for="description">Description</label>
-                        <textarea name="description" id="description" rows="5"><% if(editing==='true' ){ %><%= product.description %><%} %></textarea>
+                        <textarea name="description" id="description"
+                            rows="5"><% if(editing==='true' ){ %><%= product.description %><%} %></textarea>
                     </div>
-
-                    <button class="btn" type="submit">
-                        <% if(editing==='true' ) {%>Update Product <% } else { %>Add Product<% } %>
-                    </button>
+                    <% if(editing==='true' ) { %>
+                        <input type="hidden" value="<%= product.id %>" name="productId">
+                        <% } %>
+                            <button class="btn" type="submit">
+                                <% if(editing==='true' ) {%>Update Product <% } else { %>Add Product<% } %>
+                            </button>
                 </form>
             </main>
             <%- include('../includes/end.ejs') %>
