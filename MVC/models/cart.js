@@ -10,7 +10,7 @@ module.exports=class Cart{
     static addProduct(id,productPrice){
         //Fetch the previous cart
         fs.readFile(p,(err,fileContent)=>{
-            let cart={products:[],totlalPrice:0};
+            let cart={products:[],totalPrice:0};
             if(!err){
                 cart=JSON.parse(fileContent);
             }
@@ -29,7 +29,7 @@ module.exports=class Cart{
                 updatedProduct={id:id,qty:1};  
                 cart.products = [...cart.products,updatedProduct];
             }
-            cart.totlalPrice=cart.totlalPrice+ +productPrice;
+            cart.totalPrice=cart.totalPrice+ +productPrice;
             fs.writeFile(p,JSON.stringify(cart),err=>{
                 console.log(err);
             })
@@ -43,7 +43,10 @@ module.exports=class Cart{
                 return;
             }
             const updatedCart={...JSON.parse(fileContent)};
-            const product=updatedCart.products.findIndex(prod=>prod.id===id);
+            const product=updatedCart.products.find(prod=>prod.id===id);
+            if(!product){
+                return;
+            }
             const productQty=product.qty;
             updatedCart.products = updatedCart.products.filter(prod=>prod.id!==id);
             updatedCart.totalPrice = updatedCart.totalPrice-productPrice*productQty;
@@ -51,6 +54,18 @@ module.exports=class Cart{
                 console.log(err);
             })
         });
+    }
+
+    static getCart(cb){
+        fs.readFile(p,(err,fileContent)=>{
+            const cart=JSON.parse(fileContent);
+            if(err){
+                cb(null);
+            }
+            else{
+                cb(cart);
+            }
+        })
     }
 
 }
